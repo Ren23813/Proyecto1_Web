@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import {useReducer} from 'react'
+//import {useReducer} from 'react'
 import './App.css'
 
 
@@ -17,12 +17,11 @@ function App() {
   const [input, setInput] = useState('')
   const [prev, setPrev] = useState('')
   const [action, setAction] = useState('')
-  const [respuestaFinal, setRespuestaFinal] = useState(0)
   
   const concatenar = (valor) => {
     if (input.length < 9) {
     if (action === '') {setPrev(input)}
-    setInput(input + valor);
+    setInput(input + valor)
     }
   }
 
@@ -47,18 +46,17 @@ function App() {
     switch (accion) {
       case 'suma':
           resultado = suma(prev,input)
-        break;
+        break
       case 'resta':
           resultado = resta(prev,input)
-        break;
+        break
       case 'multiplicacion':
           resultado = multiplicacion(prev,input)
-        break;
+        break
 
       default:
-        break;
+        break
     } 
-    setRespuestaFinal(resultado)
     setInput(resultado.toString())
     setAction('')
 
