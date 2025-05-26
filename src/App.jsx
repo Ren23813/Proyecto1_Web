@@ -17,17 +17,27 @@ function App() {
       setInput(String(valor))
     }
   }
+const concatenar = (valor) => {
+  if (input === 'ERROR') return
 
-  const concatenar = (valor) => {
-    if (input === 'ERROR') return
-
-    if (prevAction||input === '') {setInput(valor)}
-    else if (input.length < 9) {
-    //if (action === '') {setPrev(input)}
-    setInput(input + valor)
+  if (valor === '.') {
+    if (prevAction || input === '') {
+      setInput('0.')
+    } 
+    else if (!input.includes('.')) {
+      setInput(input + '.')
     }
-    setPrevAction(false)
+  } 
+  else {
+    if (prevAction || input === '') {
+      setInput(valor)
+    } else if (input.length < 9) {
+      setInput(input + valor)
+    }
   }
+  setPrevAction(false)
+}
+
 
   const clear = () => {
     setInput('')
@@ -48,31 +58,47 @@ function App() {
     return parseFloat(valor1) * parseFloat(valor2)
   }
 
-  const mostrarResultado = () => {
-    if (prev === null || !action) return parseFloat(input)
-      const current = parseFloat(input)
-      let resultado = prev
-    //let resultado = 0
-    switch (action) {
-      case 'suma':
-          resultado = suma(prev,current)
-          if (resultado > 999999999) {setInput('Error')}
-        break
-      case 'resta':
-          resultado = resta(prev,current)
-          
-        break
-      case 'multiplicacion':
-          resultado = multiplicacion(prev,current)
-          if (resultado > 999999999) {setInput('Error')}
-        break
-
-      default:
-        break
-    } 
-   return resultado
-
+  const division = (valor1,valor2) => {
+    if (valor2 === '0'){return "N/A"}
+    return parseFloat(valor1) / parseFloat(valor2)
   }
+
+
+const mostrarResultado = () => {
+  if (prev === null || !action) return parseFloat(input)
+
+  const current = parseFloat(input)
+  let resultado = prev
+
+  switch (action) {
+    case 'suma':
+      resultado = suma(prev, current)
+      break
+    case 'resta':
+      resultado = resta(prev, current)
+      break
+    case 'multiplicacion':
+      resultado = multiplicacion(prev, current)
+      break
+    case "division":
+      resultado = division(prev,current)
+      if (resultado === 'N/A') {resultado = prev}
+      break
+    case "modulo":
+      resultado = prev % current
+      break
+    default:
+      return parseFloat(input)
+  }
+
+  let resultadoStr = resultado.toString()
+  if (resultadoStr.length > 9) {
+    resultadoStr = resultadoStr.slice(0, 9)
+  }
+  const resultadoFinal = parseFloat(resultadoStr)
+  return resultadoFinal
+}
+
 
   const operar = (accion) =>{
     const value = mostrarResultado()
@@ -94,18 +120,32 @@ function App() {
     setPrevAction(null)
   }
 
-  //const verifyInput = () => {negativo; mayor a 999999999}
+  const cambiarSigno = () => {
+  if (input === 'ERROR') return
+  if (input.startsWith('-')) {
+    setInput(input.slice(1))
+  } 
+  else {
+      if (input.length >= 9) {
+        const nuevoInput = input.slice(0, 8)
+        setInput('-' + nuevoInput)
+      }
+      else {
+        setInput('-' + input)
+      }
+    }
+}
 
-  //const [{inputActual, operacion}, dispatch] = useReducer(reducer, {})
+
   return (
   <div className="container"> 
     <div className="calculator"> 
       <div className="num-output">{input}</div>
       <div className="num-input">
         <button onClick = {()=>clear()}>C</button>
-        <button>S</button>
-        <button>%</button>
-        <button>÷</button>
+        <button onClick= {()=>cambiarSigno()}>S</button>
+        <button onClick={()=>operar('modulo')}>mod</button>
+        <button onClick = {()=>{operar('division')}}>÷</button>
         <button onClick = {()=>concatenar('7')}>7</button>
         <button onClick = {()=>concatenar('8')}>8 </button>
         <button onClick = {()=>concatenar('9')}>9</button>
@@ -119,7 +159,7 @@ function App() {
         <button onClick = {()=>concatenar('3')}>3</button>
         <button onClick= {()=>{operar('suma')}}>+</button>
         <button className="Bcero" onClick = {()=>concatenar('0')}>0</button>
-        <button>.</button>
+        <button onClick={()=>concatenar('.')}>.</button>
         <button onClick= {()=>{igual()}}>=</button>
       </div> 
     </div>
