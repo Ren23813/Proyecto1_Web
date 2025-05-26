@@ -10,9 +10,9 @@ describe('App - Calculadora', () => {
     render(<App />)
     const user = userEvent.setup()
 
-    await user.click(screen.getByRole('button', { name: '7' }))
-    await user.click(screen.getByRole('button', { name: '8' }))
-    await user.click(screen.getByRole('button', { name: '9' }))
+    await user.click(screen.getByText('7'))
+    await user.click(screen.getByText('8'))
+    await user.click(screen.getByText('9'))
 
     expect(screen.getByText('789')).toBeInTheDocument()
   })
@@ -20,13 +20,51 @@ describe('App - Calculadora', () => {
   it('no debería permitir más de 9 dígitos', async () => {
     render(<App />)
     const user = userEvent.setup()
-    const boton1 = screen.getByRole('button', { name: '1' })
 
+    // Hacer click 12 veces en el botón con texto '1'
+    const botonUno = screen.getByText('1')
     for (let i = 0; i < 12; i++) {
-      await user.click(boton1)
+      await user.click(botonUno)
     }
 
-    // Ahora el output único debe ser exactamente 9 dígitos
-    expect(screen.getByText((content) => content === '111111111')).toBeInTheDocument()
+    // Asegurar que el número mostrado es exactamente 9 dígitos
+    expect(screen.getByText('111111111')).toBeInTheDocument()
+  })
+
+  it('debería sumar bien y mostrar el resultado', async () => {
+    render(<App />)
+    const user = userEvent.setup()
+
+    await user.click(screen.getByText('7'))
+    await user.click(screen.getByText('+'))
+    await user.click(screen.getByText('7'))
+    await user.click(screen.getByText('='))
+
+    expect(screen.getByText('14')).toBeInTheDocument()
+  })
+
+  it('debería multiplicar bien y mostrar el resultado', async () => {
+    render(<App />)
+    const user = userEvent.setup()
+
+    await user.click(screen.getByText('5'))
+    await user.click(screen.getByText('*'))
+    await user.click(screen.getByText('2'))
+    await user.click(screen.getByText('*'))
+
+    expect(screen.getByText('10')).toBeInTheDocument()
+  })
+
+it('debería restar bien y mostrar el resultado', async () => {
+    render(<App />)
+    const user = userEvent.setup()
+
+    await user.click(screen.getByText('8'))
+    await user.click(screen.getByText('3'))
+    await user.click(screen.getByText('-'))
+    await user.click(screen.getByText('4'))
+    await user.click(screen.getByText('='))
+
+    expect(screen.getByText('79')).toBeInTheDocument()
   })
 })
