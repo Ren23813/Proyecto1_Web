@@ -67,4 +67,20 @@ it('debería restar bien y mostrar el resultado', async () => {
 
     expect(screen.getByText('79')).toBeInTheDocument()
   })
+
+  it('debería hacer bien mod', async () => {
+    render(<App />)
+    const user = userEvent.setup()
+
+    const botonOcho = screen.getByText('8')
+    for (let i = 0; i < 3; i++) {
+      await user.click(botonOcho)
+    }
+    await user.click(screen.getByText('mod'))
+    await user.click(screen.getByText('2'))
+    await user.click(screen.getByText('5'))
+    await user.click(screen.getByText('='))
+
+    expect(screen.getByText('13')).toBeInTheDocument()
+  })
 })
