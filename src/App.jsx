@@ -1,6 +1,8 @@
 import { useState } from 'react'
-//import {useReducer} from 'react'
 import './App.css'
+import NumberButton from './components/numberButton'
+import OperationButton from './components/operationButton'
+import DisplayArea from './components/displayArea'
 
 
 
@@ -24,7 +26,7 @@ const concatenar = (valor) => {
     if (prevAction || input === '') {
       setInput('0.')
     } 
-    else if (!input.includes('.')) {
+    else if (!input.includes('.') && input.length < 9) {
       setInput(input + '.')
     }
   } 
@@ -91,6 +93,9 @@ const mostrarResultado = () => {
       return parseFloat(input)
   }
 
+  if(resultado >999999999){
+    return "ERROR"
+  }
   let resultadoStr = resultado.toString()
   if (resultadoStr.length > 9) {
     resultadoStr = resultadoStr.slice(0, 9)
@@ -140,32 +145,32 @@ const mostrarResultado = () => {
   return (
   <div className="container"> 
     <div className="calculator"> 
-      <div className="num-output">{input}</div>
+      {/* <div className="num-output">{input}</div> */}
+      <DisplayArea valor={input}/>
       <div className="num-input">
-        <button onClick = {()=>clear()}>C</button>
-        <button onClick= {()=>cambiarSigno()}>S</button>
-        <button onClick={()=>operar('modulo')}>mod</button>
-        <button onClick = {()=>{operar('division')}}>÷</button>
-        <button onClick = {()=>concatenar('7')}>7</button>
-        <button onClick = {()=>concatenar('8')}>8 </button>
-        <button onClick = {()=>concatenar('9')}>9</button>
-        <button onClick = {()=>{{operar('multiplicacion')}}}>*</button>
-        <button onClick = {()=>concatenar('4')}>4</button>
-        <button onClick = {()=>concatenar('5')}>5</button>
-        <button onClick = {()=>concatenar('6')}>6</button>
-        <button onClick={()=>{operar('resta')}}>-</button>
-        <button onClick = {()=>concatenar('1')}>1</button>
-        <button onClick = {()=>concatenar('2')}>2</button>
-        <button onClick = {()=>concatenar('3')}>3</button>
-        <button onClick= {()=>{operar('suma')}}>+</button>
-        <button className="Bcero" onClick = {()=>concatenar('0')}>0</button>
-        <button onClick={()=>concatenar('.')}>.</button>
-        <button onClick= {()=>{igual()}}>=</button>
+        <OperationButton onButtonClick={()=>clear()} nombre={'C'}/>
+        <OperationButton onButtonClick={()=>cambiarSigno()} nombre={'Sign'}/>
+        <OperationButton onButtonClick={()=>operar('modulo')} nombre={'mod'}/>
+        <OperationButton onButtonClick={()=>operar('division')} nombre={'÷'}/>
+        <NumberButton onButtonClick={()=>concatenar('7')} nombre={'7'}/>
+        <NumberButton onButtonClick={()=>concatenar('8')} nombre={'8'}/>
+        <NumberButton onButtonClick={()=>concatenar('9')} nombre={'9'}/>
+        <OperationButton onButtonClick={()=>operar('multiplicacion')} nombre={'*'}/>
+        <NumberButton onButtonClick={()=>concatenar('4')} nombre={'4'}/>
+        <NumberButton onButtonClick={()=>concatenar('5')} nombre={'5'}/>
+        <NumberButton onButtonClick={()=>concatenar('6')} nombre={'6'}/>
+        <OperationButton onButtonClick={()=>operar('resta')} nombre={'-'}/>
+        <NumberButton onButtonClick={()=>concatenar('1')} nombre={'1'}/>
+        <NumberButton onButtonClick={()=>concatenar('2')} nombre={'2'}/>
+        <NumberButton onButtonClick={()=>concatenar('3')} nombre={'3'}/>
+        <OperationButton onButtonClick={()=>operar('suma')} nombre={'+'}/>
+        <NumberButton onButtonClick={()=>concatenar('0')} nombre={'0'}/>
+        <NumberButton onButtonClick={()=>concatenar('.')} nombre={'.'}/>
+        <OperationButton onButtonClick={()=>igual()} nombre={'='}/>
       </div> 
     </div>
   
-  
-  </div> //container
+  </div> 
   )
 }
 
