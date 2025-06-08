@@ -15,3 +15,5 @@ La calculadora tiene métodos de testeo, los cuales se pueden acceder con los si
 * `bun run storybook` para ver las historias de storybook para los componentes de React creados
 * `bun run test` para pasar y probar los test creados
 * `bun run lint` para comprobar el cumplimiento de las reglas de Eslint declaradas
+
+(pd: Soporte únicamente para modo oscuro del navegador. En claro también hace las mismas funciones, pero se ven feos los botones jeje.)
