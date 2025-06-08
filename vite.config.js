@@ -4,8 +4,9 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  base:'/Renato/proyecto1_calculadora/',
   test: {
-    environment: 'jsdom',              // simula el DOM en Node
+    environment: 'jsdom',             
     globals: true,                     
     setupFiles: ['./src/test/setupTests.js'],
     include: ['src/**/*.{test,spec}.{js,jsx}'], 
